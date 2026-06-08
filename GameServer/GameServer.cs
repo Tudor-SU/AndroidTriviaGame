@@ -1,40 +1,210 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
+using Microsoft.Data.Sqlite;
 
 
 namespace AndroidTriviaGame;
 
-public class GameServer
+public static class DatabaseInitializer
 {
+    private const string ConnectionString = "Data Source=trivia_game.db";
 
-    private static string ValidateCredentials(LoginCredentials? credentials)
+    public static void InitializeDatabase()
     {
-        // TODO: load from database
-        if (credentials == null) return "";
+        using var connection = new SqliteConnection(ConnectionString);
+        connection.Open();
 
-        if (credentials.Name == "john" && credentials.Password == "123")
-        {
-            return "AJHGJ";
-        }
+        var command = connection.CreateCommand();
         
-        return "";
+        command.CommandText = @"
+            DROP TABLE IF EXISTS Users; 
+            
+            CREATE TABLE Users (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Username TEXT NOT NULL UNIQUE,
+                PasswordHash TEXT NOT NULL
+            );";
+
+        command.ExecuteNonQuery();
+        Console.WriteLine("Database initialized successfully! (File: trivia_game.db)");
     }
     
+    public static SqliteConnection? EstablishDbConnection()
+    {
+        try
+        {
+            var connection = new SqliteConnection(ConnectionString);
+            connection.Open();
+            return connection;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+    }
+}
+
+public record ClientData(string Name, NetworkStream Stream);
+
+public class GameServer
+{
+    
+    private static SqliteConnection? _dbConnection;
+    private static List<ClientData> _clients = new();
+
+    private static bool IsConnected(string clientName)
+    {
+        foreach (var client in _clients)
+        {
+            if (client.Name == clientName) return  true;
+        }
+        return false;
+    }
+    
+    private static void ProcessLoginRequest(NetworkStream stream, Packet packet)
+    {
+        Credentials? credentials = JsonSerializer.Deserialize<Credentials>(packet.Data);    
+        Console.WriteLine(credentials);
+
+        if (
+            credentials is null ||
+            string.IsNullOrWhiteSpace(credentials.Name) ||
+            string.IsNullOrWhiteSpace(credentials.Password)
+        )
+        {
+            NetworkingAPI.SendPacket(
+                stream, PacketType.LoginResponse,
+                new ResponseStatus(false, "Invalid credentials provided")
+            );
+            return;
+        }
+        
+        using var command = new SqliteCommand("SELECT ...", _dbConnection);        
+        command.CommandText = "SELECT PasswordHash FROM Users WHERE Username = $user";
+        command.Parameters.AddWithValue("$user", credentials.Name);
+
+        try
+        {
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                string storedHash = reader.GetString(0);
+                string inputHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(credentials.Password)));
+
+                if (string.Equals(inputHash, storedHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (IsConnected(credentials.Name))
+                    {
+                        NetworkingAPI.SendPacket(
+                            stream, PacketType.LoginResponse,
+                            new ResponseStatus(false, "User already connected")
+                        );
+                        return;
+                    }
+                    
+                    NetworkingAPI.SendPacket(
+                        stream, PacketType.LoginResponse,
+                        new ResponseStatus(true, "Success")
+                    );
+                    Console.WriteLine($"\n[AUTH]: User '{credentials.Name}' successfully authenticated.");
+                    _clients.Add(new  ClientData(credentials.Name, stream));
+                    return;
+                }
+            }
+
+            NetworkingAPI.SendPacket(
+                stream, PacketType.LoginResponse,
+                new ResponseStatus(false, "Invalid credentials provided")
+            );
+        }
+        catch (Exception e)
+        {
+            NetworkingAPI.SendPacket(
+                stream, PacketType.LoginResponse,
+                new ResponseStatus(false, e.Message)
+            );
+        }
+
+        
+    }
+
+    private static void ProcessRegisterRequest(NetworkStream stream, Packet packet)
+    {
+        Credentials? credentials = JsonSerializer.Deserialize<Credentials>(packet.Data);    
+        
+        if (
+            credentials is null ||
+            string.IsNullOrWhiteSpace(credentials.Name) ||
+            string.IsNullOrWhiteSpace(credentials.Password)
+        ) {
+            NetworkingAPI.SendPacket(
+                stream, PacketType.RegisterResponse,
+                new ResponseStatus(false, "Invalid credentials provided")    
+            );
+            return;
+        }
+        
+        string hashedPassword = Convert.ToHexString(
+            SHA256.HashData(Encoding.UTF8.GetBytes(credentials.Password))
+        );
+        
+        var command = _dbConnection!.CreateCommand();
+        command.CommandText = "INSERT INTO Users (Username, PasswordHash) VALUES ($user, $pass)";
+        command.Parameters.AddWithValue("$user", credentials.Name);
+        command.Parameters.AddWithValue("$pass", hashedPassword);
+
+        try
+        {
+            command.ExecuteNonQuery();
+            Console.WriteLine($"[DB]: New user registered successfully: {credentials.Name}");
+
+            NetworkingAPI.SendPacket(
+                stream, PacketType.RegisterResponse,
+                new ResponseStatus(true, "Success")
+            );
+
+        }
+        catch (SqliteException e)
+        {
+            if (e.SqliteErrorCode == 19)
+            {
+                NetworkingAPI.SendPacket(
+                    stream, PacketType.RegisterResponse,
+                    new ResponseStatus(false, "Username is already taken")
+                );
+                return;
+            }
+
+            NetworkingAPI.SendPacket(
+                stream, PacketType.RegisterResponse,
+                new ResponseStatus(false, e.Message)
+            );
+        }
+        catch (Exception e)
+        {
+            NetworkingAPI.SendPacket(
+                stream, PacketType.RegisterResponse,
+                new ResponseStatus(false, e.Message)
+            );
+        }
+        
+    }
+
+
     private static void ProcessPacket(NetworkStream stream, Packet packet)
     {
         switch (packet.Type)
         {
-            case  PacketType.LoginCredentials:
-                LoginCredentials? credentials = JsonSerializer.Deserialize<LoginCredentials>(packet.Data);    
-                Console.WriteLine(credentials);
-                string response = ValidateCredentials(credentials);
-                
-                NetworkingAPI.SendPacket(
-                    stream, PacketType.LoginResponse,
-                    new LoginResponse(response)
-                );
-                
+            case  PacketType.LoginRequest:
+                ProcessLoginRequest(stream, packet);        
+                break;
+            
+            case PacketType.RegisterRequest:
+                ProcessRegisterRequest(stream, packet);
                 break;
         }    
     }
@@ -48,20 +218,20 @@ public class GameServer
         
         using var client =  (TcpClient)data;
         Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
+        NetworkStream stream = client.GetStream();
+        
         try
         {
-            using NetworkStream stream = client.GetStream();
         
-            // Loop continuously to keep reading packets over the same open stream
             while (client.Connected)
             {
                 Packet? packet = NetworkingAPI.ReceivePacket(stream);
-
-                // If ReceivePacket returns null, it almost always means 
-                // the client gracefully closed the connection from their side.
+                
                 if (packet == null)
                 {
                     Console.WriteLine($"Client disconnected gracefully: {client.Client.RemoteEndPoint}");
+                    _clients.RemoveAll(c => c.Stream == stream);
+                    stream.Close();
                     break; 
                 }
             
@@ -71,11 +241,11 @@ public class GameServer
         }
         catch (Exception e)
         {
-            // Catches unexpected disconnects, timeout errors, or broken network pipes
             Console.WriteLine($"Client disconnected abruptly ({client.Client.RemoteEndPoint}): {e.Message}");
+            _clients.RemoveAll(c => c.Stream == stream);
+            stream.Close();
         }
-        // The 'using' keywords on 'client' and 'stream' will automatically clean up 
-        // and close the sockets safely when this method finishes or throws an error!
+        
     }
     
 
@@ -95,7 +265,7 @@ public class GameServer
         
         
         Console.WriteLine($"Starting server on {ip}:{port}");
-        Console.WriteLine($"Listening for connections:");
+        Console.WriteLine("\nListening for connections:");
 
         while (true)
         {
@@ -109,8 +279,6 @@ public class GameServer
             }
             catch (Exception e)
             {
-                Console.WriteLine("raba bad");
-
                 Console.WriteLine(e);
             }
         }
@@ -118,15 +286,12 @@ public class GameServer
     
     public static string GetLocalIPAddress()
     {
-        // Get the host name of the current machine
         string hostName = Dns.GetHostName();
     
-        // Get all IP addresses associated with this host
         IPAddress[] addresses = Dns.GetHostAddresses(hostName);
 
         foreach (var ip in addresses)
         {
-            // Filter out IPv6 addresses so you only get IPv4
             if (ip.AddressFamily == AddressFamily.InterNetwork)
             {
                 return ip.ToString();
@@ -135,7 +300,25 @@ public class GameServer
 
         return "none";
     }
-    
+
+    public static int? SearchPort(string[] args)
+    {
+        string? portArg = args.FirstOrDefault(a => a.StartsWith("port=", StringComparison.OrdinalIgnoreCase));
+
+        if (portArg != null)
+        {
+            string[] parts = portArg.Split('=');
+
+            if (parts.Length == 2 && int.TryParse(parts[1], out int parsedPort))
+            {
+                return parsedPort;
+            }
+            
+            Console.WriteLine("Invalid port format provided in args. Using default port.");
+            
+        }
+        return null;
+    }
     
     public static void Main(string[] args)
     {
@@ -147,34 +330,46 @@ public class GameServer
         }
         
         IPAddress ip = IPAddress.Parse(localIP);
-        int port = 5000;
-        
-        if(args.Length > 0)
-            try
-            { 
-                port = Int32.Parse(args[0]);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return;
-            }
+        int port = SearchPort(args) ?? 5000;
 
-        string? command ;
+        if (args.Contains("init_db"))
+        {
+            DatabaseInitializer.InitializeDatabase();
+        }
+
+        _dbConnection = DatabaseInitializer.EstablishDbConnection();
+        if (_dbConnection is null)
+        {
+            Console.WriteLine("\nNo DB connection established.");
+            return;
+        }
+        Console.WriteLine("\nDB connection established.");
+        
         Thread acceptConnectionsThread = new Thread(ThreadedAcceptConnections);
         acceptConnectionsThread.IsBackground = true;
         acceptConnectionsThread.Start(Tuple.Create(ip, port));
         
+        string? command;
         while (true)
         {
             command = Console.ReadLine();
             
-            if (command == "q")
+            if (command == "/q")
             {
                 break;
             }
+
+            if (command == "/c")
+            {
+                Console.WriteLine($"\nLogged clients: {_clients.Count}");
+                foreach (var client in _clients)
+                {
+                    Console.WriteLine($"\t{client.Name}");
+                }
+            }
         }
         
-        //TODO server stopping stuff
+        _dbConnection.Close();
+        Console.WriteLine("\nServer stopped.");
     }    
 }

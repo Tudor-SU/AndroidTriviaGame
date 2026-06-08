@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="800"
-             x:Class="AndroidTriviaGame.Views.LoginView"
+             x:Class="AndroidTriviaGame.Views.RegisterView"
              xmlns:vm="using:AndroidTriviaGame.ViewModels"
-             x:DataType="vm:LoginViewModel"
+             x:DataType="vm:RegisterViewModel"
              >
     
     <Grid Width="360" Height="800" Background="#121214">
@@ -51,7 +51,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <Button Content="Log In" 
+            <Button Content="Register" 
                     Height="48" 
                     HorizontalAlignment="Stretch" 
                     HorizontalContentAlignment="Center" 
@@ -62,14 +62,14 @@
                     Background="#7C4DFF" 
                     CornerRadius="8"
                     Margin="10 0"
-                    Command="{Binding BtnLoginActionCommand}"/>
+                    Command="{Binding BtnRegisterActionCommand}"/>
 
-                <Button Content="Register" 
+                <Button Content="Login" 
                         Background="Transparent" 
                         Foreground="#7C4DFF" FontSize="12" 
                         HorizontalAlignment="Right" 
                         Margin="5 0"
-                        Command="{Binding BtnRegisterActionCommand}"/>
+                        Command="{Binding BtnLoginActionCommand}"/>
 
 
         </StackPanel>

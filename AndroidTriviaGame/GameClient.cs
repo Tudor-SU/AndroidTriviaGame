@@ -4,24 +4,44 @@ using System.Threading;
 
 namespace AndroidTriviaGame;
 
+public enum Platform
+{
+    Android, Windows
+}
+
 public class GameClient
 {
     private string IpAddress {get;}
     private int Port {get;}
 
     public string Username = "";
-    public string UId = "";
     
     private TcpClient? _tcpClient;
     private NetworkStream? _stream;
+    private Platform _platform;
     
     public event EventHandler<PacketReceivedEventArgs>? PacketReceived;
-    public GameClient(string ipAddress, int port)
+    public GameClient(string ipAddress, int port, Platform platform)
     {
         this.IpAddress = ipAddress;
         this.Port = port;
+        this._platform = platform;
     }
 
+    public void Log(string message)
+    {
+        if (_platform == Platform.Windows)
+        {
+            Console.WriteLine($"[LOG] {message}]");
+            return;
+        }
+        if (_platform == Platform.Android)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LOG] {message}");
+            return;
+        }
+    }
+    
     public NetworkStream? GetNetworkStream()
     {
         return _stream;
@@ -41,12 +61,12 @@ public class GameClient
             Packet? packet = NetworkingAPI.ReceivePacket(_stream);
             if (packet == null)
             {
-                Console.WriteLine("Server conn closed!");
+                Log("Server conn closed!");
                 _stream?.Close();
                 _stream?.Dispose();
                 break;
             }
-            Console.WriteLine($"Packet received: {packet.Type.ToString()}");
+            Log($"Packet received: {packet.Type.ToString()}");
             PacketReceived?.Invoke(this, new PacketReceivedEventArgs(packet));
         }
        
@@ -59,7 +79,7 @@ public class GameClient
             _tcpClient = new TcpClient(IpAddress, Port);
             _stream = _tcpClient.GetStream();
             
-            Console.WriteLine("Connected to " + IpAddress + ":" + Port);
+            Log("Connected to " + IpAddress + ":" + Port);
             
             Thread  recievePacketsThread = new Thread(ThreadedReceivePackets);
             recievePacketsThread.IsBackground = true;
@@ -68,12 +88,8 @@ public class GameClient
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            Log(e.Message);
         }
-        // finally
-        // {
-        //     _tcpClient?.Close();
-        // }
     }
     
 }

@@ -23,7 +23,10 @@ public partial class App : Application
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            GameClient gameClient = new GameClient("100.101.207.46", 5000);
+            GameClient gameClient = new GameClient(
+                "100.101.207.46", 5000,
+                Platform.Windows    
+            );
             gameClient.ConnectToServer();
             
             desktop.MainWindow = new MainWindow
@@ -33,7 +36,10 @@ public partial class App : Application
         }
         else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
         {
-            GameClient gameClient = new GameClient("100.101.207.46", 5000);
+            GameClient gameClient = new GameClient(
+                "100.101.207.46", 5000,
+                Platform.Android
+            );
             gameClient.ConnectToServer();
             
             singleViewFactoryApplicationLifetime.MainViewFactory = () =>

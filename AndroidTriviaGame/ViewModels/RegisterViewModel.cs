@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AndroidTriviaGame.ViewModels;
 
-public partial class LoginViewModel : ObservableObject
+public partial class RegisterViewModel : ObservableObject
 {
     [ObservableProperty]
     private string _username = "john";
@@ -19,7 +19,7 @@ public partial class LoginViewModel : ObservableObject
 
     private readonly MainWindowViewModel _mainWindowViewModel;
 
-    public LoginViewModel(MainWindowViewModel mainWindowViewModel)
+    public RegisterViewModel(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
         if (!_mainWindowViewModel.GameClient.IsConnected())
@@ -29,31 +29,30 @@ public partial class LoginViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void BtnLoginAction()
+    private void BtnRegisterAction()
     {
         try
         {
             NetworkStream? stream = _mainWindowViewModel.GameClient.GetNetworkStream();
             if (stream == null) return;
-
+        
             NetworkingAPI.SendPacket(
                 stream,
-                PacketType.LoginRequest,
+                PacketType.RegisterRequest,
                 new Credentials(Username, Password)
             );
-            Console.WriteLine($"Login {Username} {Password}");
+            _mainWindowViewModel.GameClient.Log($"Register {Username} {Password}");
         }
         catch (Exception e)
         {
-            Console.WriteLine("Login failed: " + e.Message);
+            _mainWindowViewModel.GameClient.Log("Register failed: " + e.Message);
         }
-
     }
 
     [RelayCommand]
-    private void BtnRegisterAction()
+    private void BtnLoginAction()
     {
-        _mainWindowViewModel.CurrentPage = new RegisterViewModel(_mainWindowViewModel);
+        _mainWindowViewModel.CurrentPage = new LoginViewModel(_mainWindowViewModel);
     }
 
 }

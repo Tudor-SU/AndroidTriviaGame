@@ -23,6 +23,10 @@
         <DataTemplate DataType="viewModels:CreateRoomViewModel">
             <views:CreateRoomView/>
         </DataTemplate>
+        
+        <DataTemplate DataType="viewModels:RegisterViewModel">
+            <views:RegisterView/>
+        </DataTemplate>
 
     </UserControl.DataTemplates> <ContentControl Content="{Binding CurrentPage}" />
 </UserControl>

@@ -8,12 +8,14 @@ namespace AndroidTriviaGame;
 
 public enum PacketType
 {
-    LoginCredentials,
-    LoginResponse
+    LoginRequest,
+    RegisterRequest,
+    LoginResponse,
+    RegisterResponse,
 }
 
-public record LoginCredentials(string Name, string Password);
-public record LoginResponse(string UId);
+public record Credentials(string Name, string Password);
+public record ResponseStatus(bool IsSuccess, string Message);
 public record Packet(PacketType Type, string Data);
 
 public class PacketReceivedEventArgs : EventArgs
@@ -95,7 +97,7 @@ public class NetworkingAPI
             // 4. Deserialize directly into your Packet record (extracts Type and Data text)
             return JsonSerializer.Deserialize<Packet>(entirePacketJson);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             // Console.WriteLine($"Error receiving packet: {e.Message}");
             return null;

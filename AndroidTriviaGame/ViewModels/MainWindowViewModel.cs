@@ -12,23 +12,58 @@ public partial class MainWindowViewModel : ObservableObject
     private GameClient _gameClient;
     public GameClient GameClient => _gameClient;
 
+    private void HandleLoginResponse(PacketReceivedEventArgs e)
+    {
+        var result = JsonSerializer.Deserialize<ResponseStatus>(e.Packet.Data);
+
+        if (result is null) return;
+                
+        _gameClient.Log($"Login Response: {result}");
+        if (CurrentPage is LoginViewModel lvm )
+        {
+            if (!result.IsSuccess)
+            {
+                lvm.ErrMsg = result.Message;
+                return;
+            }
+            _gameClient.Username = lvm.Username;
+            CurrentPage = new MenuViewModel(this);
+        }
+    }
+
+    private void HandleRegisterResponse(PacketReceivedEventArgs e)
+    {
+        var result = JsonSerializer.Deserialize<ResponseStatus>(e.Packet.Data);
+
+        if (result is null) return;
+                
+        _gameClient.Log($"Register Response: {result}");
+        if (CurrentPage is RegisterViewModel rvm )
+        {
+            if (!result.IsSuccess)
+            {
+                rvm.ErrMsg = result.Message;
+                return;
+            }
+
+            LoginViewModel lvm = new LoginViewModel(this);
+            lvm.Username = rvm.Username;
+            lvm.Password = rvm.Password;
+            CurrentPage = lvm;
+        }
+    }
+
+
     private void HandlePacket(object? sender, PacketReceivedEventArgs e)
     {
         switch (e.Packet.Type)
         {
             case PacketType.LoginResponse:
-                var result = JsonSerializer.Deserialize<LoginResponse>(e.Packet.Data);
-
-                if (result is null) return;
-                
-                Console.WriteLine($"Login Response: {result}");
-                if (CurrentPage is LoginViewModel lvm)
-                {
-                    _gameClient.Username = lvm.Username;
-                    _gameClient.UId = result.UId;
-                    LoadMenuPage();
-                }
-                
+                HandleLoginResponse(e);
+                break;
+            
+            case PacketType.RegisterResponse:
+                HandleRegisterResponse(e);
                 break;
         }
     }
@@ -45,10 +80,7 @@ public partial class MainWindowViewModel : ObservableObject
         CurrentPage = new LoginViewModel(this);
     }
     
-    public void LoadMenuPage()
-    {
-        CurrentPage = new MenuViewModel(this);
-    }
+
 
     
 }
