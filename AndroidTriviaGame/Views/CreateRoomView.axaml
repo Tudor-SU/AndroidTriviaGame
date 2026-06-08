@@ -1,0 +1,74 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AndroidTriviaGame.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="800"
+             x:Class="AndroidTriviaGame.Views.CreateRoomView"
+             x:DataType="vm:CreateRoomViewModel">
+    
+    <Grid Background="#121214">
+        
+        <Grid VerticalAlignment="Top" Margin="16,16,16,0" ColumnDefinitions="Auto, *, Auto">
+            
+            <Button Grid.Column="0"
+                    Content="← Back" 
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Foreground="#B3B3B3" 
+                    Background="Transparent" 
+                    BorderThickness="0"
+                    Padding="8"
+                    Command="{Binding BackCommand}"/>
+
+            <Button Grid.Column="2"
+                    Content="Join Room" 
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="#7C4DFF" 
+                    Background="Transparent" 
+                    BorderThickness="0"
+                    Padding="8"
+                    Command="{Binding JoinRoomCommand}"/>
+            
+        </Grid>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Spacing="24" Margin="32">
+            
+            <StackPanel HorizontalAlignment="Center" Spacing="8">
+                <TextBlock Text="✨" FontSize="48" HorizontalAlignment="Center"/>
+                <TextBlock Text="Create a Room" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- <TextBox Text="{Binding RoomCode}" -->
+            <!--          PlaceholderText="Enter Code"  -->
+            <!--          FontSize="24"  -->
+            <!--          FontWeight="Bold" -->
+            <!--          TextAlignment="Center" -->
+            <!--          VerticalContentAlignment="Center" -->
+            <!--          Height="64"  -->
+            <!--          CornerRadius="8" -->
+            <!--          Background="#1A1A1E" -->
+            <!--          BorderBrush="#29292E" -->
+            <!--          BorderThickness="1" -->
+            <!--          Foreground="White" -->
+            <!--          SelectionBrush="#7C4DFF" -->
+            <!--          Margin="0,16,0,0"/> -->
+
+            <StackPanel Spacing="16" Margin="0,16,0,0">
+                <Button Content="Create" 
+                        Height="56" 
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center" 
+                        VerticalContentAlignment="Center"
+                        FontSize="18" 
+                        FontWeight="Bold" 
+                        Foreground="White" 
+                        Background="#7C4DFF" 
+                        CornerRadius="8"
+                        Command="{Binding CreateCommand}"/>
+            </StackPanel>
+            
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,72 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="800"
+             x:Class="AndroidTriviaGame.Views.LoginView"
+             xmlns:vm="using:AndroidTriviaGame.ViewModels"
+             x:DataType="vm:LoginViewModel"
+             >
+    
+    <Grid Width="360" Height="800" Background="#121214">
+        
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Spacing="28">
+            
+            <StackPanel HorizontalAlignment="Center" Spacing="8">
+                <Border Width="68" Height="68" CornerRadius="18" Background="#7C4DFF" HorizontalAlignment="Center">
+                    <TextBlock Text="🎮" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="Trivia Arena" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                <TextBlock Text="{Binding ErrMsg}" FontSize="14" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+            </StackPanel>
+
+            <StackPanel Spacing="18" Margin="10,12,10,0">
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Username" FontSize="12" FontWeight="SemiBold" Foreground="#B3B3B3" Margin="4,0,0,0"/>
+                    <TextBox PlaceholderText="Enter your username"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding Username}"
+                             Height="48" 
+                             CornerRadius="8"
+                             Background="#1A1A1E"
+                             BorderBrush="#29292E"
+                             BorderThickness="1"
+                             Foreground="White"
+                             SelectionBrush="#7C4DFF"/>
+                </StackPanel>
+
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Password" FontSize="12" FontWeight="SemiBold" Foreground="#B3B3B3" Margin="4,0,0,0"/>
+                    <TextBox PasswordChar="*" 
+                             Text="{Binding Password}"
+                             VerticalContentAlignment="Center"
+                             PlaceholderText="Enter your password" 
+                             Height="48" 
+                             CornerRadius="8"
+                             Background="#1A1A1E"
+                             BorderBrush="#29292E"
+                             BorderThickness="1"
+                             Foreground="White"
+                             SelectionBrush="#7C4DFF"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Button Content="Log In" 
+                    Height="48" 
+                    HorizontalAlignment="Stretch" 
+                    HorizontalContentAlignment="Center" 
+                    VerticalContentAlignment="Center"
+                    FontSize="16" 
+                    FontWeight="Bold" 
+                    Foreground="White" 
+                    Background="#7C4DFF" 
+                    CornerRadius="8"
+                    Margin="10 0"
+                    Command="{Binding BtnLoginActionCommand}"/>
+
+                <Button Content="Register" Background="Transparent" Foreground="#7C4DFF" FontSize="12" HorizontalAlignment="Right" Margin="5 0"/>
+
+
+        </StackPanel>
+    </Grid>
+</UserControl>

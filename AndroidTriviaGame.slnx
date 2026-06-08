@@ -1,0 +1,11 @@
+﻿<Solution>
+  <Project Path="AndroidTriviaGame.Android/AndroidTriviaGame.Android.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="AndroidTriviaGame.Browser/AndroidTriviaGame.Browser.csproj" />
+  <Project Path="AndroidTriviaGame.Desktop/AndroidTriviaGame.Desktop.csproj" />
+  <Project Path="AndroidTriviaGame.iOS/AndroidTriviaGame.iOS.csproj">
+    <Deploy />
+  </Project>
+  <Project Path="AndroidTriviaGame/AndroidTriviaGame.csproj" />
+</Solution>
