@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:AndroidTriviaGame.ViewModels"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="800"
-             x:Class="AndroidTriviaGame.Views.CreateRoomView"
-             x:DataType="vm:CreateRoomViewModel">
+             x:Class="AndroidTriviaGame.Views.CreateLobbyView"
+             x:DataType="vm:CreateLobbyViewModel">
     
     <Grid Background="#121214">
         
@@ -22,14 +22,14 @@
                     Command="{Binding BackCommand}"/>
 
             <Button Grid.Column="2"
-                    Content="Join Room" 
+                    Content="Join Lobby" 
                     FontSize="16"
                     FontWeight="Bold"
                     Foreground="#7C4DFF" 
                     Background="Transparent" 
                     BorderThickness="0"
                     Padding="8"
-                    Command="{Binding JoinRoomCommand}"/>
+                    Command="{Binding JoinLobbyCommand}"/>
             
         </Grid>
 
@@ -37,23 +37,8 @@
             
             <StackPanel HorizontalAlignment="Center" Spacing="8">
                 <TextBlock Text="✨" FontSize="48" HorizontalAlignment="Center"/>
-                <TextBlock Text="Create a Room" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Create Lobby" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
             </StackPanel>
-
-            <!-- <TextBox Text="{Binding RoomCode}" -->
-            <!--          PlaceholderText="Enter Code"  -->
-            <!--          FontSize="24"  -->
-            <!--          FontWeight="Bold" -->
-            <!--          TextAlignment="Center" -->
-            <!--          VerticalContentAlignment="Center" -->
-            <!--          Height="64"  -->
-            <!--          CornerRadius="8" -->
-            <!--          Background="#1A1A1E" -->
-            <!--          BorderBrush="#29292E" -->
-            <!--          BorderThickness="1" -->
-            <!--          Foreground="White" -->
-            <!--          SelectionBrush="#7C4DFF" -->
-            <!--          Margin="0,16,0,0"/> -->
 
             <StackPanel Spacing="16" Margin="0,16,0,0">
                 <Button Content="Create" 

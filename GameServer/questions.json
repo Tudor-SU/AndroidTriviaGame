@@ -1,0 +1,502 @@
+[
+  {
+    "QuestionText": "What is the capital of France?",
+    "Answers": ["Paris", "London", "Berlin", "Madrid"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "Which planet is known as the Red Planet?",
+    "Answers": ["Earth", "Mars", "Jupiter", "Saturn"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the largest ocean on Earth?",
+    "Answers": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Who wrote 'Romeo and Juliet'?",
+    "Answers": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the chemical symbol for gold?",
+    "Answers": ["Ag", "Go", "Au", "Gd"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "In what year did the Titanic sink?",
+    "Answers": ["1912", "1905", "1898", "1923"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "What is the hardest natural substance on Earth?",
+    "Answers": ["Gold", "Iron", "Diamond", "Quartz"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which country is home to the kangaroo?",
+    "Answers": ["New Zealand", "South Africa", "Australia", "India"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the smallest planet in our solar system?",
+    "Answers": ["Venus", "Mars", "Mercury", "Neptune"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who painted the Mona Lisa?",
+    "Answers": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the tallest mountain in the world?",
+    "Answers": ["K2", "Mount Everest", "Mount Kilimanjaro", "Denali"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Which element has the atomic number 1?",
+    "Answers": ["Oxygen", "Helium", "Hydrogen", "Carbon"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the longest river in the world?",
+    "Answers": ["Amazon River", "Nile River", "Yangtze River", "Mississippi River"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who was the first President of the United States?",
+    "Answers": ["Thomas Jefferson", "Abraham Lincoln", "George Washington", "John Adams"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the capital of Japan?",
+    "Answers": ["Seoul", "Beijing", "Tokyo", "Kyoto"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which gas do plants absorb from the atmosphere?",
+    "Answers": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "How many continents are there?",
+    "Answers": ["5", "6", "7", "8"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the currency of the United Kingdom?",
+    "Answers": ["Euro", "Pound Sterling", "Dollar", "Franc"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who discovered gravity when an apple fell on his head?",
+    "Answers": ["Albert Einstein", "Isaac Newton", "Galileo Galilei", "Nikola Tesla"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the capital of Australia?",
+    "Answers": ["Sydney", "Melbourne", "Canberra", "Perth"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which mammal can fly?",
+    "Answers": ["Flying Squirrel", "Bat", "Lemur", "Sugar Glider"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the largest mammal in the world?",
+    "Answers": ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who wrote 'To Kill a Mockingbird'?",
+    "Answers": ["Harper Lee", "J.K. Rowling", "Ernest Hemingway", "F. Scott Fitzgerald"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "What is the main ingredient in guacamole?",
+    "Answers": ["Tomato", "Onion", "Avocado", "Pepper"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which organ pumps blood through the human body?",
+    "Answers": ["Brain", "Lungs", "Liver", "Heart"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "What is the square root of 64?",
+    "Answers": ["6", "7", "8", "9"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which continent is the Sahara Desert located on?",
+    "Answers": ["Asia", "Africa", "South America", "Australia"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the most spoken language in the world?",
+    "Answers": ["English", "Spanish", "Mandarin Chinese", "Hindi"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who is known as the 'Father of Computers'?",
+    "Answers": ["Alan Turing", "Charles Babbage", "Bill Gates", "Steve Jobs"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the chemical symbol for water?",
+    "Answers": ["HO", "H2O", "O2", "W"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "In what year did World War II end?",
+    "Answers": ["1941", "1943", "1945", "1947"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the largest planet in our solar system?",
+    "Answers": ["Earth", "Saturn", "Jupiter", "Neptune"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who painted the Sistine Chapel ceiling?",
+    "Answers": ["Leonardo da Vinci", "Raphael", "Michelangelo", "Donatello"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the capital of Canada?",
+    "Answers": ["Toronto", "Vancouver", "Montreal", "Ottawa"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Which metal is liquid at room temperature?",
+    "Answers": ["Mercury", "Lead", "Iron", "Copper"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "What is the largest bone in the human body?",
+    "Answers": ["Skull", "Femur", "Tibia", "Humerus"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who was the first person to walk on the moon?",
+    "Answers": ["Buzz Aldrin", "Yuri Gagarin", "Neil Armstrong", "John Glenn"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the capital of Italy?",
+    "Answers": ["Venice", "Florence", "Milan", "Rome"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Which animal is the tallest in the world?",
+    "Answers": ["Elephant", "Giraffe", "Ostrich", "Camel"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the speed of light?",
+    "Answers": ["300,000 km/s", "150,000 km/s", "1,000,000 km/s", "500,000 km/s"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "Who wrote '1984'?",
+    "Answers": ["George Orwell", "Aldous Huxley", "Ray Bradbury", "J.R.R. Tolkien"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "What is the capital of Spain?",
+    "Answers": ["Barcelona", "Seville", "Valencia", "Madrid"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Which planet is closest to the Sun?",
+    "Answers": ["Venus", "Earth", "Mercury", "Mars"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the boiling point of water in Celsius?",
+    "Answers": ["50", "90", "100", "120"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who is the Greek god of the sea?",
+    "Answers": ["Zeus", "Hades", "Poseidon", "Apollo"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the largest desert in the world (by area)?",
+    "Answers": ["Sahara", "Arabian", "Gobi", "Antarctic Desert"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Which instrument has 88 keys?",
+    "Answers": ["Guitar", "Piano", "Violin", "Flute"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the capital of Germany?",
+    "Answers": ["Munich", "Frankfurt", "Berlin", "Hamburg"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who invented the telephone?",
+    "Answers": ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell", "Guglielmo Marconi"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the smallest country in the world?",
+    "Answers": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Which bird is a universal symbol of peace?",
+    "Answers": ["Eagle", "Dove", "Owl", "Swan"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the main gas found in the air we breathe?",
+    "Answers": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who played Jack in the movie 'Titanic'?",
+    "Answers": ["Brad Pitt", "Johnny Depp", "Tom Cruise", "Leonardo DiCaprio"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "What is the capital of Brazil?",
+    "Answers": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "How many bones are in the adult human body?",
+    "Answers": ["206", "208", "210", "212"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "Which artist famously cut off part of his own ear?",
+    "Answers": ["Claude Monet", "Vincent van Gogh", "Salvador Dalí", "Pablo Picasso"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the most abundant element in the universe?",
+    "Answers": ["Helium", "Oxygen", "Carbon", "Hydrogen"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "What is the capital of Russia?",
+    "Answers": ["St. Petersburg", "Moscow", "Kiev", "Minsk"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Which animal is known as the 'King of the Jungle'?",
+    "Answers": ["Tiger", "Elephant", "Lion", "Gorilla"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What year did the first man step on the moon?",
+    "Answers": ["1965", "1969", "1971", "1973"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the chemical symbol for sodium?",
+    "Answers": ["So", "Na", "Sd", "N"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who wrote 'Harry Potter'?",
+    "Answers": ["J.R.R. Tolkien", "C.S. Lewis", "J.K. Rowling", "Stephen King"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the highest-grossing film of all time (unadjusted for inflation)?",
+    "Answers": ["Avatar", "Avengers: Endgame", "Titanic", "Star Wars: The Force Awakens"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "What is the capital of China?",
+    "Answers": ["Shanghai", "Hong Kong", "Beijing", "Taipei"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which ocean is located on the east coast of the United States?",
+    "Answers": ["Pacific", "Atlantic", "Indian", "Arctic"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the freezing point of water in Fahrenheit?",
+    "Answers": ["0", "16", "32", "64"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who was the second President of the United States?",
+    "Answers": ["Thomas Jefferson", "John Adams", "James Madison", "Alexander Hamilton"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the capital of Egypt?",
+    "Answers": ["Alexandria", "Giza", "Luxor", "Cairo"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Which fictional detective lived at 221B Baker Street?",
+    "Answers": ["Hercule Poirot", "Sherlock Holmes", "Philip Marlowe", "Sam Spade"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the largest state in the USA by area?",
+    "Answers": ["Texas", "California", "Montana", "Alaska"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Which vitamin is primarily obtained from sunlight?",
+    "Answers": ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "Who painted 'The Starry Night'?",
+    "Answers": ["Pablo Picasso", "Vincent van Gogh", "Claude Monet", "Edvard Munch"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the capital of India?",
+    "Answers": ["Mumbai", "New Delhi", "Kolkata", "Bangalore"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the only even prime number?",
+    "Answers": ["0", "1", "2", "4"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which country won the first FIFA World Cup in 1930?",
+    "Answers": ["Brazil", "Germany", "Uruguay", "Argentina"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the longest bone in the human body?",
+    "Answers": ["Fibula", "Tibia", "Femur", "Humerus"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who is the author of 'The Great Gatsby'?",
+    "Answers": ["F. Scott Fitzgerald", "Ernest Hemingway", "Mark Twain", "John Steinbeck"],
+    "CorrectIndex": 0
+  },
+  {
+    "QuestionText": "What is the capital of Mexico?",
+    "Answers": ["Guadalajara", "Cancun", "Mexico City", "Monterrey"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which element has the chemical symbol 'O'?",
+    "Answers": ["Gold", "Osmium", "Oxygen", "Oganesson"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the national flower of Japan?",
+    "Answers": ["Rose", "Cherry Blossom", "Lotus", "Orchid"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who discovered penicillin?",
+    "Answers": ["Marie Curie", "Alexander Fleming", "Louis Pasteur", "Joseph Lister"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the capital of South Korea?",
+    "Answers": ["Busan", "Incheon", "Seoul", "Daegu"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which US state is known as the 'Sunshine State'?",
+    "Answers": ["California", "Florida", "Hawaii", "Texas"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the primary language spoken in Brazil?",
+    "Answers": ["Spanish", "Portuguese", "English", "French"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who formulated the theory of relativity?",
+    "Answers": ["Isaac Newton", "Stephen Hawking", "Albert Einstein", "Niels Bohr"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the capital of Argentina?",
+    "Answers": ["Santiago", "Lima", "Buenos Aires", "Bogota"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Which planet has the most moons?",
+    "Answers": ["Jupiter", "Saturn", "Uranus", "Neptune"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the largest organ of the human body?",
+    "Answers": ["Liver", "Heart", "Skin", "Lungs"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who directed the movie 'Jurassic Park'?",
+    "Answers": ["George Lucas", "James Cameron", "Steven Spielberg", "Christopher Nolan"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the capital of Thailand?",
+    "Answers": ["Hanoi", "Bangkok", "Manila", "Jakarta"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Which chess piece can only move diagonally?",
+    "Answers": ["Rook", "Knight", "Pawn", "Bishop"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "What is the hardest rock?",
+    "Answers": ["Granite", "Marble", "Diamond", "Obsidian"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "Who was the 16th President of the United States?",
+    "Answers": ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "Theodore Roosevelt"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the capital of Greece?",
+    "Answers": ["Rome", "Athens", "Sparta", "Istanbul"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Which ocean is the largest?",
+    "Answers": ["Atlantic", "Indian", "Arctic", "Pacific"],
+    "CorrectIndex": 3
+  },
+  {
+    "QuestionText": "What is the main ingredient in hummus?",
+    "Answers": ["Lentils", "Chickpeas", "Black Beans", "Peas"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Who wrote 'The Odyssey'?",
+    "Answers": ["Virgil", "Homer", "Sophocles", "Euripides"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "What is the capital of Turkey?",
+    "Answers": ["Istanbul", "Ankara", "Izmir", "Antalya"],
+    "CorrectIndex": 1
+  },
+  {
+    "QuestionText": "Which shape has five sides?",
+    "Answers": ["Hexagon", "Octagon", "Pentagon", "Triangle"],
+    "CorrectIndex": 2
+  },
+  {
+    "QuestionText": "What is the chemical symbol for iron?",
+    "Answers": ["Ir", "Fe", "In", "I"],
+    "CorrectIndex": 1
+  }
+]

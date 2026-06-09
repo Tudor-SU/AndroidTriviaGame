@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:AndroidTriviaGame.ViewModels"
              mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="800"
-             x:Class="AndroidTriviaGame.Views.JoinRoomView"
-             x:DataType="vm:JoinRoomViewModel">
+             x:Class="AndroidTriviaGame.Views.JoinLobbyView"
+             x:DataType="vm:JoinLobbyViewModel">
     
     <Grid Background="#121214">
         
@@ -22,14 +22,14 @@
                     Command="{Binding BackCommand}"/>
 
             <Button Grid.Column="2"
-                    Content="Create Room" 
+                    Content="Create Lobby" 
                     FontSize="16"
                     FontWeight="Bold"
                     Foreground="#7C4DFF" 
                     Background="Transparent" 
                     BorderThickness="0"
                     Padding="8"
-                    Command="{Binding CreateRoomCommand}"/>
+                    Command="{Binding CreateLobbyCommand}"/>
             
         </Grid>
 
@@ -37,10 +37,10 @@
             
             <StackPanel HorizontalAlignment="Center" Spacing="8">
                 <TextBlock Text="🚪" FontSize="48" HorizontalAlignment="Center"/>
-                <TextBlock Text="Join a Room" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Join Lobby" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
             </StackPanel>
 
-            <TextBox Text="{Binding RoomCode}"
+            <TextBox Text="{Binding LobbyCode}"
                      PlaceholderText="Enter Code" 
                      FontSize="24" 
                      FontWeight="Bold"

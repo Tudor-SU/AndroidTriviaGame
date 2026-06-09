@@ -1,5 +1,4 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Text.Json;
 
 namespace AndroidTriviaGame.ViewModels;
@@ -53,6 +52,22 @@ public partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    private void HandleCreateLobbyResponse(PacketReceivedEventArgs e)
+    {
+        var result = JsonSerializer.Deserialize<ResponseStatus>(e.Packet.Data);
+        _gameClient.Log($"Create Lobby Response: {result}");
+
+        if (result is null || !result.IsSuccess) return;
+
+        if (CurrentPage is CreateLobbyViewModel)
+        {
+            LobbyViewModel lvm = new LobbyViewModel(this);
+            lvm.RoomCode = result.Message;
+            lvm.IsHost = true;
+            lvm.Players = [_gameClient.Username];
+            CurrentPage = lvm;
+        }
+    }
 
     private void HandlePacket(object? sender, PacketReceivedEventArgs e)
     {
@@ -64,6 +79,10 @@ public partial class MainWindowViewModel : ObservableObject
             
             case PacketType.RegisterResponse:
                 HandleRegisterResponse(e);
+                break;
+            
+            case PacketType.CreateLobbyResponse:
+                HandleCreateLobbyResponse(e);
                 break;
         }
     }

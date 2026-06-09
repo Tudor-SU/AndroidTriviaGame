@@ -4,14 +4,14 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AndroidTriviaGame.ViewModels;
 
-public partial class JoinRoomViewModel:ObservableObject
+public partial class JoinLobbyViewModel:ObservableObject
 {
     [ObservableProperty]
-    private string _roomCode = "";
+    private string _lobbyCode = "";
     
     MainWindowViewModel _mainWindowViewModel;
     
-    public JoinRoomViewModel(MainWindowViewModel mainWindowViewModel)
+    public JoinLobbyViewModel(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
     }
@@ -19,13 +19,13 @@ public partial class JoinRoomViewModel:ObservableObject
     [RelayCommand]
     public void Join()
     {
-        Console.WriteLine($"Joining room {RoomCode}");
+        Console.WriteLine($"Joining lobby {LobbyCode}");
     }
 
     [RelayCommand]
-    public void CreateRoom()
+    public void CreateLobby()
     {
-     _mainWindowViewModel.CurrentPage = new CreateRoomViewModel(_mainWindowViewModel);   
+     _mainWindowViewModel.CurrentPage = new CreateLobbyViewModel(_mainWindowViewModel);   
     }
 
     [RelayCommand]

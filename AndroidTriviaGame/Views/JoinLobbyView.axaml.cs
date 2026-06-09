@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace AndroidTriviaGame.Views;
 
-public partial class CreateRoomView : UserControl
+public partial class JoinLobbyView : UserControl
 {
-    public CreateRoomView()
+    public JoinLobbyView()
     {
         InitializeComponent();
     }

@@ -16,17 +16,22 @@
             <views:MenuView/>
         </DataTemplate>
         
-        <DataTemplate DataType="viewModels:JoinRoomViewModel">
-            <views:JoinRoomView/>
+        <DataTemplate DataType="viewModels:JoinLobbyViewModel">
+            <views:JoinLobbyView/>
         </DataTemplate>
         
-        <DataTemplate DataType="viewModels:CreateRoomViewModel">
-            <views:CreateRoomView/>
+        <DataTemplate DataType="viewModels:CreateLobbyViewModel">
+            <views:CreateLobbyView/>
         </DataTemplate>
         
         <DataTemplate DataType="viewModels:RegisterViewModel">
             <views:RegisterView/>
         </DataTemplate>
+        
+        <DataTemplate DataType="viewModels:LobbyViewModel">
+            <views:LobbyView/>
+        </DataTemplate>
+
 
     </UserControl.DataTemplates> <ContentControl Content="{Binding CurrentPage}" />
 </UserControl>

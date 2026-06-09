@@ -18,6 +18,6 @@ public partial class MenuViewModel:ObservableObject
     [RelayCommand]
     public void Play()
     {
-        _mainWindowViewModel.CurrentPage = new JoinRoomViewModel(_mainWindowViewModel);
+        _mainWindowViewModel.CurrentPage = new JoinLobbyViewModel(_mainWindowViewModel);
     }
 }

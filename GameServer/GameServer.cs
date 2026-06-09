@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.Data.Sqlite;
 
-
 namespace AndroidTriviaGame;
 
 public static class DatabaseInitializer
@@ -50,11 +49,52 @@ public static class DatabaseInitializer
 
 public record ClientData(string Name, NetworkStream Stream);
 
+public class LobbyData
+{
+    public Dictionary<string, int> StatusTable { get; set; }
+    public string Code { get; set; }
+    public List<QuizQuestion> Questions { get; set; }
+    public int QuestionIndex { get; set; }
+    public string HostName { get; set; }
+    public bool Started { get; set; }
+
+    public LobbyData(
+        string code, 
+        List<QuizQuestion> questions, 
+        string hostName
+        )
+    {
+        StatusTable = new ();
+        Code = code;
+        Questions = questions;
+        QuestionIndex = 0;
+        HostName = hostName;
+        Started = false;
+        StatusTable.Add(hostName, 0);
+    }
+
+    public List<String> GetPlayerNames()
+    {
+        return StatusTable.Keys.ToList();
+    }
+
+    public override string ToString()
+    {
+        string result = $"\tCode: {Code}\n\tHost: {HostName}\n\tPlayers: ";
+        foreach (var name in GetPlayerNames())
+        {
+            result += $"{name} | ";
+        }
+
+        return result;
+    } 
+}
 public class GameServer
 {
     
     private static SqliteConnection? _dbConnection;
     private static List<ClientData> _clients = new();
+    private static List<LobbyData> _lobbies = new();
 
     private static bool IsConnected(string clientName)
     {
@@ -194,6 +234,51 @@ public class GameServer
         
     }
 
+    private static string GenerateLobbyCode()
+    {
+        Random rnd = new Random();
+        string code = "";
+
+        while (code.Length < 6)
+        {
+            code += rnd.Next(0, 10).ToString();
+        }
+
+        foreach (var lobbyData in _lobbies)
+        {
+            if (lobbyData.Code == code)
+            {
+                return GenerateLobbyCode();
+            }    
+        }
+
+        return code;
+    }
+    
+    private static void ProcessCreateLobbyRequest(NetworkStream stream, Packet packet)
+    {
+        string code = GenerateLobbyCode();
+        var questions = QuizManager.ExtractQuestions();
+        
+        Console.WriteLine($"[CREATE]: Successfully created lobby code: {code}");
+        
+        string? hostName = JsonSerializer.Deserialize<string>(packet.Data);
+
+        if (hostName is null)
+        {
+            Console.WriteLine($"[CREATE]: Failed to create lobby code: {code}: hostName is null");
+            return;
+        }
+        
+        _lobbies.Add(new  LobbyData(
+            code, questions, hostName    
+        ));
+        
+        NetworkingAPI.SendPacket(
+            stream, PacketType.CreateLobbyResponse,
+            new ResponseStatus(true, code)
+        );
+    }
 
     private static void ProcessPacket(NetworkStream stream, Packet packet)
     {
@@ -205,6 +290,10 @@ public class GameServer
             
             case PacketType.RegisterRequest:
                 ProcessRegisterRequest(stream, packet);
+                break;
+            
+            case PacketType.CreateLobbyRequest:
+                ProcessCreateLobbyRequest(stream, packet);
                 break;
         }    
     }
@@ -264,7 +353,7 @@ public class GameServer
         listener.Start();
         
         
-        Console.WriteLine($"Starting server on {ip}:{port}");
+        Console.WriteLine($"\nStarting server on {ip}:{port}");
         Console.WriteLine("\nListening for connections:");
 
         while (true)
@@ -344,6 +433,23 @@ public class GameServer
             return;
         }
         Console.WriteLine("\nDB connection established.");
+
+        try
+        {
+            int count = QuizManager.LoadQuestions("questions.json");
+            if (count == 0)
+            {
+                Console.WriteLine("[ERROR] No quiz questions found at questions.json");
+                return;
+            }
+            Console.WriteLine($"[QUIZ]: Successfully loaded {count} questions");
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return;
+        }
         
         Thread acceptConnectionsThread = new Thread(ThreadedAcceptConnections);
         acceptConnectionsThread.IsBackground = true;
@@ -366,7 +472,20 @@ public class GameServer
                 {
                     Console.WriteLine($"\t{client.Name}");
                 }
+                continue;
             }
+
+            if (command == "/l")
+            {
+                Console.WriteLine($"\nCurrent lobbies: {_lobbies.Count}");
+                foreach (var lobby in _lobbies)
+                {
+                    Console.WriteLine(lobby);
+                }
+                continue;
+            }
+            
+            Console.WriteLine("\nUnknown command!");
         }
         
         _dbConnection.Close();
