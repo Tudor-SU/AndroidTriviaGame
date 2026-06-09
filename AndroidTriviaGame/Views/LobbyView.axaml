@@ -7,9 +7,10 @@
              x:Class="AndroidTriviaGame.Views.LobbyView"
              x:DataType="vm:LobbyViewModel">
     
-    <Grid Background="#121214">
+    <Grid>
     
         <Grid VerticalAlignment="Top" Margin="16,16,16,0" ColumnDefinitions="Auto, *, Auto">
+            
             <Button Grid.Column="0"
                     Content="Leave Room"
                     FontSize="15"
@@ -21,7 +22,7 @@
                     Command="{Binding LeaveCommand}"/>
     
             <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal" Spacing="6">
-                <TextBlock Text="Room:" Foreground="#B3B3B3" FontSize="14" VerticalAlignment="Center"/>
+                <TextBlock Text="Room:" Opacity="0.7" FontSize="14" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding RoomCode}" Foreground="#7C4DFF" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
             </StackPanel>
         </Grid>
@@ -29,24 +30,25 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Spacing="24" Margin="24">
     
             <StackPanel HorizontalAlignment="Center" Spacing="6">
-                <TextBlock Text="Waiting for Players..." FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Waiting for Players..." FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="4">
                     <TextBlock Text="{Binding Players.Count}" Foreground="#7C4DFF" FontWeight="Bold" FontSize="14"/>
-                    <TextBlock Text="/ 4 Players" Foreground="#B3B3B3" FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock Text="/ 4 Players" Opacity="0.7" FontWeight="SemiBold" FontSize="14"/>
                 </StackPanel>
             </StackPanel>
     
-            <Border Background="#1A1A1E" BorderBrush="#29292E" BorderThickness="1" CornerRadius="12" Padding="8">
-                <ListBox ItemsSource="{Binding Players}" Background="Transparent" VerticalAlignment="Stretch">
-                    <ListBox.ItemTemplate>
+            <Border BorderBrush="Gray" Opacity="0.8" BorderThickness="1" CornerRadius="12" Padding="8">
+                <ItemsControl ItemsSource="{Binding Players}">
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
                             <Grid ColumnDefinitions="Auto, *" Margin="4,6">
                                 <TextBlock Grid.Column="0" Text="👤" FontSize="20" Margin="0,0,12,0" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="1" Text="{Binding}" FontSize="16" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding}" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </Grid>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Border>
     
             <Button Content="Start Game 🚀"

@@ -1,0 +1,90 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="360" d:DesignHeight="800"
+             x:Class="AndroidTriviaGame.Views.SettingsView"
+             xmlns:vm="using:AndroidTriviaGame.ViewModels"
+             x:DataType="vm:SettingsViewModel">
+    
+    <Grid>
+        
+        <Grid VerticalAlignment="Top" Margin="16,16,16,0" ColumnDefinitions="Auto, *, Auto">
+            <Button Grid.Column="0"
+                    Content="← Back" 
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Background="Transparent" 
+                    BorderThickness="0"
+                    Padding="8"
+                    Command="{Binding BackCommand}"/>
+        </Grid>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Spacing="25" Margin="30">
+            
+            <TextBlock Text="Settings" 
+                       FontSize="{DynamicResource MenuFontSize}"
+                       FontWeight="Bold" HorizontalAlignment="Center"/>
+
+            <Button Command="{Binding ToggleThemeCommand}" 
+                    HorizontalAlignment="Stretch"
+                    CornerRadius="8"
+                    Padding="15">
+        
+                <TextBlock Text="Toggle Dark/Light Mode" 
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center" 
+                           FontSize="{DynamicResource MenuFontSize}"/>
+               
+            </Button>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="{Binding MenuFontSize, StringFormat='Menu Font Size: {0:0}'}" />
+                <Slider Minimum="12" Maximum="36" 
+                        Value="{Binding MenuFontSize}" />
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="{Binding QuestionFontSize, StringFormat='Question Font Size: {0:0}'}" />
+                <Slider Minimum="16" Maximum="40" 
+                        Value="{Binding QuestionFontSize}" />
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <TextBlock Text="{Binding AnswerFontSize, StringFormat='Answer Font Size: {0:0}'}" />
+                <Slider Minimum="12" Maximum="30" 
+                        Value="{Binding AnswerFontSize}" />
+            </StackPanel>
+            
+            <TextBlock 
+                Text="Question text preview"
+                FontSize="{DynamicResource QuestionFontSize}"
+                TextWrapping="Wrap"
+                TextAlignment="Center"
+                />
+            
+            <TextBlock 
+                Text="Answer text preview"
+                FontSize="{DynamicResource AnswerFontSize}"
+                TextWrapping="Wrap"
+                TextAlignment="Center"
+            />
+            
+            <Button Command="{Binding SaveCommand}"
+                    IsEnabled="{Binding UnsavedChanges}"
+                    HorizontalAlignment="Stretch" 
+                    CornerRadius="8"
+                    Padding="15">
+        
+                <TextBlock Text="Save changes" 
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center" 
+                           FontSize="{DynamicResource MenuFontSize}"
+                           />
+               
+            </Button>
+            
+        </StackPanel>    
+        
+    </Grid>
+</UserControl>

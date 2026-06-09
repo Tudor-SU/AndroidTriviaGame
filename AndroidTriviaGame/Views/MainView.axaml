@@ -31,6 +31,10 @@
         <DataTemplate DataType="viewModels:LobbyViewModel">
             <views:LobbyView/>
         </DataTemplate>
+        
+        <DataTemplate DataType="viewModels:SettingsViewModel">
+            <views:SettingsView/>
+        </DataTemplate>
 
 
     </UserControl.DataTemplates> <ContentControl Content="{Binding CurrentPage}" />

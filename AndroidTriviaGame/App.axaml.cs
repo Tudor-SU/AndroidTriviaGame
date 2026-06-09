@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using AndroidTriviaGame.ViewModels;
 using AndroidTriviaGame.Views;
 using Avalonia.Controls;
+using Avalonia.Styling;
 
 namespace AndroidTriviaGame;
 
@@ -20,14 +21,30 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        AppSettings? savedSettings = AppSettings.Load();
+
+        if (savedSettings != null)
+        {
+            Resources["MenuFontSize"] = savedSettings.MenuFontSize;
+            Resources["QuestionFontSize"] = savedSettings.QuestionFontSize;
+            Resources["AnswerFontSize"] = savedSettings.AnswerFontSize;
+        
+            RequestedThemeVariant = savedSettings.IsDarkMode ? ThemeVariant.Dark : ThemeVariant.Light;
+        }
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            
             GameClient gameClient = new GameClient(
                 "100.101.207.46", 5000,
                 Platform.Windows    
             );
             gameClient.ConnectToServer();
+            
+            if (savedSettings is null)
+            {
+                gameClient.Log("No previous settings were found");
+            }
             
             desktop.MainWindow = new MainWindow
             {
@@ -41,6 +58,11 @@ public partial class App : Application
                 Platform.Android
             );
             gameClient.ConnectToServer();
+            
+            if (savedSettings is null)
+            {
+                gameClient.Log("No previous settings were found");
+            }
             
             singleViewFactoryApplicationLifetime.MainViewFactory = () =>
             {

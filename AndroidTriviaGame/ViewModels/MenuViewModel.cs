@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AndroidTriviaGame.ViewModels;
@@ -19,5 +20,17 @@ public partial class MenuViewModel:ObservableObject
     public void Play()
     {
         _mainWindowViewModel.CurrentPage = new JoinLobbyViewModel(_mainWindowViewModel);
+    }
+    
+    [RelayCommand]
+    public void Settings()
+    {
+        _mainWindowViewModel.CurrentPage = new SettingsViewModel(_mainWindowViewModel);
+    }
+
+    [RelayCommand]
+    public void Exit()
+    {
+        Environment.Exit(0);
     }
 }

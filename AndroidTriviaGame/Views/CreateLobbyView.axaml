@@ -7,7 +7,7 @@
              x:Class="AndroidTriviaGame.Views.CreateLobbyView"
              x:DataType="vm:CreateLobbyViewModel">
     
-    <Grid Background="#121214">
+    <Grid>
         
         <Grid VerticalAlignment="Top" Margin="16,16,16,0" ColumnDefinitions="Auto, *, Auto">
             
@@ -15,8 +15,6 @@
                     Content="← Back" 
                     FontSize="16"
                     FontWeight="SemiBold"
-                    Foreground="#B3B3B3" 
-                    Background="Transparent" 
                     BorderThickness="0"
                     Padding="8"
                     Command="{Binding BackCommand}"/>
@@ -25,7 +23,6 @@
                     Content="Join Lobby" 
                     FontSize="16"
                     FontWeight="Bold"
-                    Foreground="#7C4DFF" 
                     Background="Transparent" 
                     BorderThickness="0"
                     Padding="8"
@@ -37,7 +34,7 @@
             
             <StackPanel HorizontalAlignment="Center" Spacing="8">
                 <TextBlock Text="✨" FontSize="48" HorizontalAlignment="Center"/>
-                <TextBlock Text="Create Lobby" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                <TextBlock Text="Create Lobby" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Spacing="16" Margin="0,16,0,0">

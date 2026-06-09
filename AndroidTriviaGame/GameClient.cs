@@ -32,7 +32,7 @@ public class GameClient
     {
         if (_platform == Platform.Windows)
         {
-            Console.WriteLine($"[LOG] {message}]");
+            Console.WriteLine($"[LOG] {message}");
             return;
         }
         if (_platform == Platform.Android)
