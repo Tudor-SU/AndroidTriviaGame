@@ -149,6 +149,16 @@ public class GameServer
 
         return null;
     }
+
+    private static string? SearchClientName(NetworkStream clientStream)
+    {
+        foreach (var clientData in _clients)
+        {
+            if (clientData.Stream == clientStream) return clientData.Name;
+        }
+        
+        return null;
+    }
     
     private static void ProcessLoginRequest(NetworkStream stream, Packet packet)
     {
@@ -392,10 +402,8 @@ public class GameServer
         lobbyData.StatusTable.Add(data.PlayerName, 0);
     }
 
-    private static void ProcessLeaveLobbyUpdate(NetworkStream stream, Packet packet)
-   
+    private static void HandlePlayerLeft(string? name)
     {
-        var name =  JsonSerializer.Deserialize<string>(packet.Data);
         if (name is null) return;
         
         LobbyData? lobbyData = SearchLobbyContainingPlayer(name);
@@ -464,6 +472,13 @@ public class GameServer
             SendGameStateUpdate(lobbyData);
             
         }
+    }
+    
+    private static void ProcessLeaveLobbyUpdate(Packet packet)
+   
+    {
+        var name =  JsonSerializer.Deserialize<string>(packet.Data);
+        HandlePlayerLeft(name);
      
     }
 
@@ -500,7 +515,7 @@ public class GameServer
         }
     }
 
-    private static void ProcessStartGameRequest(NetworkStream stream, Packet packet)
+    private static void ProcessStartGameRequest(Packet packet)
     {
         var code =  JsonSerializer.Deserialize<string>(packet.Data);
         if (code is null) return;
@@ -512,7 +527,7 @@ public class GameServer
         SendGameStateUpdate(lobbyData);
     }
 
-    private static void ProcessSubmitAnswerUpdate(NetworkStream stream, Packet packet)
+    private static void ProcessSubmitAnswerUpdate(Packet packet)
     {
         var data = JsonSerializer.Deserialize<AnswerUpdate>(packet.Data);
         if(data is null) return;
@@ -564,15 +579,15 @@ public class GameServer
                 break;
             
             case PacketType.LeaveLobbyUpdate:
-                ProcessLeaveLobbyUpdate(stream, packet);
+                ProcessLeaveLobbyUpdate(packet);
                 break;
             
             case PacketType.StartGameRequest:
-                ProcessStartGameRequest(stream, packet);
+                ProcessStartGameRequest(packet);
                 break;
             
             case PacketType.SubmitAnswerUpdate:
-                ProcessSubmitAnswerUpdate(stream, packet);
+                ProcessSubmitAnswerUpdate(packet);
                 break;
         }    
     }
@@ -597,7 +612,8 @@ public class GameServer
                 
                 if (packet == null)
                 {
-                    Console.WriteLine($"Client disconnected gracefully: {client.Client.RemoteEndPoint}");
+                    Console.WriteLine($"\nClient disconnected gracefully: {client.Client.RemoteEndPoint}");
+                    HandlePlayerLeft(SearchClientName(stream));
                     _clients.RemoveAll(c => c.Stream == stream);
                     stream.Close();
                     break; 
@@ -609,7 +625,8 @@ public class GameServer
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Client disconnected abruptly ({client.Client.RemoteEndPoint}): {e.Message}");
+            Console.WriteLine($"\nClient disconnected abruptly ({client.Client.RemoteEndPoint}): {e.Message}");
+            HandlePlayerLeft(SearchClientName(stream));
             _clients.RemoveAll(c => c.Stream == stream);
             stream.Close();
         }
