@@ -35,6 +35,14 @@
         <DataTemplate DataType="viewModels:SettingsViewModel">
             <views:SettingsView/>
         </DataTemplate>
+        
+        <DataTemplate DataType="viewModels:GameViewModel">
+            <views:GameView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="viewModels:StatsViewModel">
+            <views:StatsView/>
+        </DataTemplate>
 
 
     </UserControl.DataTemplates> <ContentControl Content="{Binding CurrentPage}" />

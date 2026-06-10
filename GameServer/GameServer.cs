@@ -52,11 +52,14 @@ public record ClientData(string Name, NetworkStream Stream);
 public class LobbyData
 {
     public Dictionary<string, int> StatusTable { get; set; }
+    public Dictionary<string, int> Answers { get; set; }
     public string Code { get; set; }
     public List<QuizQuestion> Questions { get; set; }
     public int QuestionIndex { get; set; }
     public string HostName { get; set; }
     public bool Started { get; set; }
+
+    public int MaxPlayerCount { get; } = 4;
 
     public LobbyData(
         string code, 
@@ -65,6 +68,7 @@ public class LobbyData
         )
     {
         StatusTable = new ();
+        Answers = new();
         Code = code;
         Questions = questions;
         QuestionIndex = 0;
@@ -73,9 +77,22 @@ public class LobbyData
         StatusTable.Add(hostName, 0);
     }
 
+    public GameStateUpdate GenerateGameStateUpdate()
+    {
+        return new GameStateUpdate(
+            StatusTable, Questions.ElementAt(QuestionIndex),
+            QuestionIndex, Questions.Count()
+        );
+    }
+
     public List<String> GetPlayerNames()
     {
         return StatusTable.Keys.ToList();
+    }
+
+    public int GetPlayerCount()
+    {
+        return GetPlayerNames().Count;
     }
 
     public override string ToString()
@@ -103,6 +120,34 @@ public class GameServer
             if (client.Name == clientName) return  true;
         }
         return false;
+    }
+
+    private static LobbyData? SearchLobby(string lobbyCode)
+    {
+        foreach (var lobby in _lobbies)
+        {
+            if (lobby.Code == lobbyCode) return lobby;
+        }
+        return null;
+    }
+
+    private static LobbyData? SearchLobbyContainingPlayer(string playerName)
+    {
+        foreach (var lobby in _lobbies)
+        {
+            if (lobby.GetPlayerNames().Contains(playerName)) return  lobby;
+        }
+        return null;
+    }
+
+    private static NetworkStream? SearchClientStream(string clientName)
+    {
+        foreach (var clientData in _clients)
+        {
+            if (clientData.Name == clientName) return clientData.Stream;
+        }
+
+        return null;
     }
     
     private static void ProcessLoginRequest(NetworkStream stream, Packet packet)
@@ -280,6 +325,224 @@ public class GameServer
         );
     }
 
+    private static void ProcessJoinLobbyRequest(NetworkStream stream, Packet packet)
+    {
+        var data =  JsonSerializer.Deserialize<JoinLobbyInfo>(packet.Data);
+        if (data is null) return;
+        
+        LobbyData? lobbyData = SearchLobby(data.LobbyCode);
+
+        if (lobbyData is null)
+        {
+            NetworkingAPI.SendPacket(
+                stream, PacketType.JoinLobbyResponse,
+                new JoinLobbyResponse(
+                    new ResponseStatus(false, $"Lobby not found"),
+                    null, null
+                )
+            );
+            return;
+        }
+
+        if (lobbyData.Started)
+        {
+            NetworkingAPI.SendPacket(
+                stream, PacketType.JoinLobbyResponse,
+                new JoinLobbyResponse(
+                    new ResponseStatus(false, $"Quiz already started"),
+                    null, null
+                )
+            );
+            return;
+        }
+
+        if (lobbyData.GetPlayerCount() == lobbyData.MaxPlayerCount)
+        {
+            NetworkingAPI.SendPacket(
+                stream, PacketType.JoinLobbyResponse,
+                new JoinLobbyResponse(
+                    new ResponseStatus(false, $"Lobby is full"),
+                    null, null
+                )
+            );
+            return;
+        }
+        
+        NetworkingAPI.SendPacket(
+            stream, PacketType.JoinLobbyResponse,
+            new JoinLobbyResponse(
+                new ResponseStatus(true, $"Success"),
+                lobbyData.GetPlayerNames(), lobbyData.Code
+            )
+        );
+        
+        Console.WriteLine($"\n[JOIN]: {data.PlayerName} joined lobby {data.LobbyCode}");
+        
+        foreach (var playerName in lobbyData.GetPlayerNames())
+        {
+            NetworkStream? playerStream = SearchClientStream(playerName);
+            if (playerStream is null) continue;
+                
+            NetworkingAPI.SendPacket(
+                playerStream, PacketType.PlayerJoinedUpdate,
+                data.PlayerName
+            );
+        }
+        
+        lobbyData.StatusTable.Add(data.PlayerName, 0);
+    }
+
+    private static void ProcessLeaveLobbyUpdate(NetworkStream stream, Packet packet)
+   
+    {
+        var name =  JsonSerializer.Deserialize<string>(packet.Data);
+        if (name is null) return;
+        
+        LobbyData? lobbyData = SearchLobbyContainingPlayer(name);
+
+        if (lobbyData is null) return;
+        
+        lobbyData.StatusTable.Remove(name);
+        
+        if (lobbyData.HostName == name && !lobbyData.Started)
+        {
+            Console.WriteLine($"\n[LEAVE]: Host {name} left the lobby\nLobby {lobbyData.Code} was canceled");
+            
+            foreach (var playerName in lobbyData.GetPlayerNames())
+            {
+                NetworkStream? playerStream = SearchClientStream(playerName);
+                if (playerStream is null) continue;
+                
+                NetworkingAPI.SendPacket(
+                    playerStream, PacketType.HostLeftUpdate,
+                    lobbyData.HostName
+                );
+            }
+            _lobbies.Remove(lobbyData);
+        }
+
+        else
+        {
+            Console.WriteLine($"\n[LEAVE]: Player {name} left the lobby");
+
+            if (!lobbyData.Started)
+            {
+                foreach (var playerName in lobbyData.GetPlayerNames())
+                {
+                    NetworkStream? playerStream = SearchClientStream(playerName);
+                    if (playerStream is null) continue;
+
+                    NetworkingAPI.SendPacket(
+                        playerStream, PacketType.PlayerLeftUpdate,
+                        name
+                    );
+                }
+
+                return;
+            }
+
+            if (lobbyData.GetPlayerCount() == 0)
+            {
+                Console.WriteLine($"\n[Lobby {lobbyData.Code}] All players left. Game is canceled");
+                _lobbies.Remove(lobbyData);
+            }
+            
+            if (lobbyData.Answers.Count == lobbyData.GetPlayerCount())
+            {
+                lobbyData.QuestionIndex++;
+                if (lobbyData.QuestionIndex == lobbyData.Questions.Count)
+                {
+                    Console.WriteLine($"\n[Lobby {lobbyData.Code}] Game finished");
+                    SendShowStatsUpdate(lobbyData);
+                    _lobbies.Remove(lobbyData);
+                    
+                    return;
+                }
+
+                lobbyData.Answers = new();
+            }
+            SendGameStateUpdate(lobbyData);
+            
+        }
+     
+    }
+
+    private static void SendGameStateUpdate(LobbyData lobbyData)
+    {
+        GameStateUpdate gameStateUpdate = lobbyData.GenerateGameStateUpdate();
+        
+        foreach (var playerName in lobbyData.GetPlayerNames())
+        {
+            NetworkStream? playerStream = SearchClientStream(playerName);
+            if (playerStream is null) continue;
+            
+            Console.WriteLine($"Sending update to {playerName}");
+            NetworkingAPI.SendPacket(
+                playerStream, PacketType.GameStateUpdate,
+                gameStateUpdate
+            );
+        }
+    }
+
+    private static void SendShowStatsUpdate(LobbyData lobbyData)
+    {
+        foreach (var playerName in lobbyData.GetPlayerNames())
+        {
+            NetworkStream? playerStream = SearchClientStream(playerName);
+            if (playerStream is null) continue;
+            
+            NetworkingAPI.SendPacket(
+                playerStream, PacketType.ShowStatsUpdate,
+                lobbyData.StatusTable
+            );
+            
+            
+        }
+    }
+
+    private static void ProcessStartGameRequest(NetworkStream stream, Packet packet)
+    {
+        var code =  JsonSerializer.Deserialize<string>(packet.Data);
+        if (code is null) return;
+        
+        LobbyData?  lobbyData = SearchLobby(code);
+        if (lobbyData is null) return;
+        
+        lobbyData.Started = true;
+        SendGameStateUpdate(lobbyData);
+    }
+
+    private static void ProcessSubmitAnswerUpdate(NetworkStream stream, Packet packet)
+    {
+        var data = JsonSerializer.Deserialize<AnswerUpdate>(packet.Data);
+        if(data is null) return;
+        LobbyData? lobbyData = SearchLobbyContainingPlayer(data.PlayerName);
+        if (lobbyData is null) return;
+        
+        lobbyData.Answers[data.PlayerName] = data.AnswerIndex;
+        Console.WriteLine($"\n[Lobby {lobbyData.Code}] : {data.PlayerName} answered {data.AnswerIndex}");
+
+        if (data.AnswerIndex == lobbyData.Questions[lobbyData.QuestionIndex].CorrectIndex)
+        {
+            lobbyData.StatusTable[data.PlayerName]++;
+        }
+        
+        if (lobbyData.Answers.Count == lobbyData.GetPlayerCount())
+        {
+            lobbyData.QuestionIndex++;
+            if (lobbyData.QuestionIndex == lobbyData.Questions.Count)
+            {
+                Console.WriteLine($"\n[Lobby {lobbyData.Code}] Game finished");
+                SendShowStatsUpdate(lobbyData);
+                _lobbies.Remove(lobbyData);
+                return;
+            }
+
+            lobbyData.Answers = new();
+            SendGameStateUpdate(lobbyData);
+        }
+    }
+
     private static void ProcessPacket(NetworkStream stream, Packet packet)
     {
         switch (packet.Type)
@@ -294,6 +557,22 @@ public class GameServer
             
             case PacketType.CreateLobbyRequest:
                 ProcessCreateLobbyRequest(stream, packet);
+                break;
+            
+            case PacketType.JoinLobbyRequest:
+                ProcessJoinLobbyRequest(stream, packet);
+                break;
+            
+            case PacketType.LeaveLobbyUpdate:
+                ProcessLeaveLobbyUpdate(stream, packet);
+                break;
+            
+            case PacketType.StartGameRequest:
+                ProcessStartGameRequest(stream, packet);
+                break;
+            
+            case PacketType.SubmitAnswerUpdate:
+                ProcessSubmitAnswerUpdate(stream, packet);
                 break;
         }    
     }

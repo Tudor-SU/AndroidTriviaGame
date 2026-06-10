@@ -37,6 +37,9 @@
             <StackPanel HorizontalAlignment="Center" Spacing="8">
                 <TextBlock Text="🚪" FontSize="48" HorizontalAlignment="Center"/>
                 <TextBlock Text="Join Lobby" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding ErrMsg}" FontSize="14" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                
+                
             </StackPanel>
 
             <TextBox Text="{Binding LobbyCode}"

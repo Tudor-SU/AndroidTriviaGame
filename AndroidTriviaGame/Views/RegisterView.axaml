@@ -8,7 +8,7 @@
              x:DataType="vm:RegisterViewModel"
              >
     
-    <Grid Width="360" Height="800" Background="#121214">
+    <Grid Width="360" Height="800" >
         
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Spacing="28">
             
@@ -16,22 +16,18 @@
                 <Border Width="68" Height="68" CornerRadius="18" Background="#7C4DFF" HorizontalAlignment="Center">
                     <TextBlock Text="🎮" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Trivia Arena" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                <TextBlock Text="Trivia Arena" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,8,0,0"/>
                 <TextBlock Text="{Binding ErrMsg}" FontSize="14" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Center" Margin="0,8,0,0"/>
             </StackPanel>
 
             <StackPanel Spacing="18" Margin="10,12,10,0">
                 <StackPanel Spacing="6">
-                    <TextBlock Text="Username" FontSize="12" FontWeight="SemiBold" Foreground="#B3B3B3" Margin="4,0,0,0"/>
+                    <TextBlock Text="Username" FontSize="12" FontWeight="SemiBold" Margin="4,0,0,0"/>
                     <TextBox PlaceholderText="Enter your username"
                              VerticalContentAlignment="Center"
                              Text="{Binding Username}"
                              Height="48" 
                              CornerRadius="8"
-                             Background="#1A1A1E"
-                             BorderBrush="#29292E"
-                             BorderThickness="1"
-                             Foreground="White"
                              SelectionBrush="#7C4DFF"/>
                 </StackPanel>
 
@@ -43,10 +39,6 @@
                              PlaceholderText="Enter your password" 
                              Height="48" 
                              CornerRadius="8"
-                             Background="#1A1A1E"
-                             BorderBrush="#29292E"
-                             BorderThickness="1"
-                             Foreground="White"
                              SelectionBrush="#7C4DFF"/>
                 </StackPanel>
             </StackPanel>
@@ -56,7 +48,7 @@
                     HorizontalAlignment="Stretch" 
                     HorizontalContentAlignment="Center" 
                     VerticalContentAlignment="Center"
-                    FontSize="16" 
+                    FontSize="{DynamicResource MenuFontSize}" 
                     FontWeight="Bold" 
                     Foreground="White" 
                     Background="#7C4DFF" 

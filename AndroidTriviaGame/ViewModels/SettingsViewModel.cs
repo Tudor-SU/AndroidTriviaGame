@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Text.Json;
+
 using Avalonia;
 
 using Avalonia.Styling;
@@ -24,7 +23,7 @@ public partial class SettingsViewModel : ObservableObject
     private bool _unsavedChanges; 
     
     private readonly MainWindowViewModel _mainWindowViewModel;
-    private AppSettings _appSettingsCopy;
+    private AppSettings? _appSettingsCopy;
 
     public SettingsViewModel(MainWindowViewModel mainWindowViewModel)
     {
@@ -95,7 +94,7 @@ public partial class SettingsViewModel : ObservableObject
     [RelayCommand]
     private void Back()
     {
-        if (Application.Current != null && UnsavedChanges)
+        if (Application.Current != null && _appSettingsCopy != null && UnsavedChanges)
         {
             Application.Current.Resources["MenuFontSize"] = _appSettingsCopy.MenuFontSize;
             Application.Current.Resources["QuestionFontSize"] = _appSettingsCopy.QuestionFontSize;
@@ -114,7 +113,7 @@ public partial class SettingsViewModel : ObservableObject
     [RelayCommand]
     private void Save()
     {
-        if (Application.Current == null) return;
+        if (Application.Current is null || _appSettingsCopy is null) return;
         
         UnsavedChanges = false;
         _appSettingsCopy.AnswerFontSize = AnswerFontSize;

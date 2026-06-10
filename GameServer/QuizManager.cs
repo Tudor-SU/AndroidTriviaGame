@@ -1,12 +1,10 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 
 namespace AndroidTriviaGame;
-
-public record QuizQuestion(
-    string QuestionText, 
-    List<string> Answers, 
-    int CorrectIndex
-);
 
 public static class QuizManager
 {

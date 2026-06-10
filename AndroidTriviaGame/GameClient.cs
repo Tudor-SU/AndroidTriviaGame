@@ -44,7 +44,7 @@ public class GameClient
     
     public NetworkStream? GetNetworkStream()
     {
-        return _stream;
+        return IsConnected()? _stream : null;
     }
 
     public bool IsConnected()

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndroidTriviaGame;
 
@@ -13,12 +15,42 @@ public enum PacketType
     LoginResponse,
     RegisterResponse,
     CreateLobbyRequest,
-    CreateLobbyResponse
+    CreateLobbyResponse,
+    JoinLobbyRequest,
+    JoinLobbyResponse,
+    LeaveLobbyUpdate,
+    PlayerLeftUpdate,
+    HostLeftUpdate,
+    PlayerJoinedUpdate,
+    SubmitAnswerUpdate,
+    StartGameRequest,
+    GameStateUpdate,
+    ShowStatsUpdate
 }
 
 public record Credentials(string Name, string Password);
 public record ResponseStatus(bool IsSuccess, string Message);
 public record Packet(PacketType Type, string Data);
+public record JoinLobbyInfo(string PlayerName, string LobbyCode);
+public record JoinLobbyResponse(
+    ResponseStatus Status, List<string>? PlayerNames,
+    string? LobbyCode
+);
+
+public record QuizQuestion(
+    string QuestionText, 
+    List<string> Answers, 
+    int CorrectIndex
+);
+
+public record GameStateUpdate(
+    Dictionary<string, int> StatusTable, 
+    QuizQuestion CurrentQuestion,        
+    int CurrentQuestionIndex,            
+    int TotalQuestions
+);
+
+public record AnswerUpdate(string PlayerName, int AnswerIndex);
 
 public class PacketReceivedEventArgs : EventArgs
 {

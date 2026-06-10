@@ -15,7 +15,9 @@
                 <Border Width="68" Height="68" CornerRadius="18" Background="#7C4DFF" HorizontalAlignment="Center">
                     <TextBlock Text="🎮" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="Trivia Arena" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                <TextBlock Text="Trivia Arena" 
+                           FontSize="28" 
+                           FontWeight="Bold" HorizontalAlignment="Center" Margin="0,8,0,0"/>
                 
                 <TextBlock Text="{Binding ErrMsg}" FontSize="14" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Center" Margin="0,8,0,0"/>
             </StackPanel>
@@ -50,7 +52,7 @@
                     HorizontalAlignment="Stretch" 
                     HorizontalContentAlignment="Center" 
                     VerticalContentAlignment="Center"
-                    FontSize="16" 
+                    FontSize="{DynamicResource MenuFontSize}" 
                     FontWeight="Bold" 
                     Foreground="White" 
                     Background="#7C4DFF" 
