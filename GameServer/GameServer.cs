@@ -305,13 +305,13 @@ public class GameServer
         string code = GenerateLobbyCode();
         var questions = QuizManager.ExtractQuestions();
         
-        Console.WriteLine($"[CREATE]: Successfully created lobby code: {code}");
+        Console.WriteLine($"\n[CREATE]: Successfully created lobby code: {code}");
         
         string? hostName = JsonSerializer.Deserialize<string>(packet.Data);
 
         if (hostName is null)
         {
-            Console.WriteLine($"[CREATE]: Failed to create lobby code: {code}: hostName is null");
+            Console.WriteLine($"\n[CREATE]: Failed to create lobby code: {code}: hostName is null");
             return;
         }
         
@@ -759,7 +759,7 @@ public class GameServer
                 Console.WriteLine($"\nCurrent lobbies: {_lobbies.Count}");
                 foreach (var lobby in _lobbies)
                 {
-                    Console.WriteLine(lobby);
+                    Console.WriteLine($"\n{lobby}");
                 }
                 continue;
             }
