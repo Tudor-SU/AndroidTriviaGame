@@ -5,20 +5,23 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AndroidTriviaGame.ViewModels;
 
+public record PlayerStat(int Rank, string Name, int Score);
+
 public partial class StatsViewModel : ObservableObject
 {
     private readonly MainWindowViewModel _mainWindowViewModel;
 
     [ObservableProperty] 
-    private List<string> _statsList ;
+    private List<PlayerStat> _statsList;
 
     public StatsViewModel(MainWindowViewModel mainWindowViewModel, Dictionary<string, int> playerScores)
     {
         _mainWindowViewModel = mainWindowViewModel;
-        _statsList = playerScores.OrderByDescending(x => x.Value)
-            .Select(x => $"{x.Key}: {x.Value}")  
-            .ToList();
         
+        StatsList = playerScores
+            .OrderByDescending(x => x.Value)
+            .Select((kvp, index) => new PlayerStat(index + 1, kvp.Key, kvp.Value))
+            .ToList();
     }
 
     [RelayCommand]
