@@ -38,7 +38,6 @@ public class GameClient
         if (_platform == Platform.Android)
         {
             System.Diagnostics.Debug.WriteLine($"[LOG] {message}");
-            return;
         }
     }
     

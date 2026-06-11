@@ -9,7 +9,6 @@ public partial class StatsViewModel : ObservableObject
 {
     private readonly MainWindowViewModel _mainWindowViewModel;
 
-    // The list of strings you want to display
     [ObservableProperty] 
     private List<string> _statsList ;
 
